@@ -57,9 +57,6 @@ String json="[{\n" +
 
         assertThat(httpResponse.getStatusLine().getStatusCode()).isEqualTo(200);
         assertThat(responseString).isEqualTo(json);
-
-
-
     }
 
     private String convertResponseToString (HttpResponse response) throws IOException{
