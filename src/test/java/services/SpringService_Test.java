@@ -31,6 +31,13 @@ String json="[{\n" +
         "\"name\":\"Java\",\n" +
         "\"price\": 12000\n" +
         "}]";
+    private String convertResponseToString (HttpResponse response) throws IOException{
+        InputStream responseStream = response.getEntity().getContent();
+        Scanner scanner = new Scanner(responseStream,"UTF-8");
+        String responseString = scanner.useDelimiter("\\Z").next();
+        scanner.close();
+        return responseString;
+    }
     private static final WireMockServer wireMockServer = new WireMockServer();
 
     @BeforeEach
@@ -51,7 +58,7 @@ String json="[{\n" +
                .withStatus(200)));
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
-        HttpGet request = new HttpGet(String.format("%s/cource/get/all","http://localhost:8080"));
+        HttpGet request = new HttpGet(String.format("%s/cource/get/all","http://127.0.0.1:8080"));
         HttpResponse httpResponse = httpClient.execute(request);
         String responseString =  convertResponseToString(httpResponse);
 
@@ -59,14 +66,7 @@ String json="[{\n" +
         assertThat(responseString).isEqualTo(json);
     }
 
-    private String convertResponseToString (HttpResponse response) throws IOException{
-        InputStream responseStream = response.getEntity().getContent();
-        Scanner scanner = new Scanner(responseStream,"UTF-8");
-        String responseString = scanner.useDelimiter("\\Z").next();
-        scanner.close();
-        return responseString;
 
-    }
 
 
 
